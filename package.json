@@ -23,7 +23,8 @@
     "next": "13.4.4-canary.11",
     "react": "18.2.0",
     "react-dom": "^18.2.0",
-    "stream": "^0.0.2"
+    "stream": "^0.0.2",
+    "webpack-node-externals": "^3.0.0"
   },
   "devDependencies": {
     "@types/node": "^17.0.12",

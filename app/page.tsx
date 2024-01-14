@@ -17,20 +17,20 @@ import {
 function ModelSelector({ onSelectModel }) {
   // 3. Initialize state for the currentModel
   const [currentModel, setCurrentModel] = useState({
-    model: "claude-2-100k",
-    src: "anthropic-logo.png",
-    alt: "Anthropic Logo",
+    model: "gpt-3.5-turbo",
+    src: "openai-logo.png",
+    alt: "OpenAI Logo",
   });
 
   // 4. Define modelSelection array
   const modelSelection = [
     {
-      model: "claude-2-100k",
-      src: "anthropic-logo.png",
-      alt: "Anthropic Logo",
+      model: "gpt-3.5-turbo",
+      src: "openai-logo.png",
+      alt: "OpenAI Logo",
     },
     {
-      model: "gpt-3.5",
+      model: "gpt-4",
       src: "openai-logo.png",
       alt: "OpenAI Logo",
     },
@@ -94,12 +94,7 @@ function VectorSelector({ onSelectVectorStorage }) {
       vectorName: "Supabase",
       src: "supabase-logo.png",
       alt: "Supabase Logo",
-    },
-    {
-      vectorName: "Pinecone",
-      src: "pinecone-logo.png",
-      alt: "Pinecone Logo",
-    },
+    }
   ];
 
   // 11. Define handleClick function
@@ -129,12 +124,11 @@ export default function App() {
   const [isInputFocused, setInputFocused] = useState(false);
   const [files, setFiles] = useState([]);
   const [showSlideUp, setShowSlideUp] = useState(false);
-  const [selectedModel, setSelectedModel] = useState("gpt-3.5");
+  const [selectedModel, setSelectedModel] = useState("gpt-3.5-turbo");
   const [selectedVectorStorage, setSelectedVectorStorage] =
     useState("Supabase");
   const [functions, setFunctions] = useState([
     { name: "wikipediaQuery", active: false, label: "Wikipedia Search" },
-    { name: "fetchCryptoPrice", active: false, label: "Crypto Price" },
   ]);
 
   // 15. Define chat related hooks using useChat()
