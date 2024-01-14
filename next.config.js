@@ -10,10 +10,10 @@ const nextConfig = {
 	      'bufferutil': 'commonjs bufferutil',
 	    })
 
-        config.externals = [...config.externals, "hnswlib-node"]
+        config.externals = [...config.externals, "hnswlib-node"];
 
         return config
-    },
+    }
 }
 
 export default nextConfig
