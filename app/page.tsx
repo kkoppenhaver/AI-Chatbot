@@ -352,7 +352,7 @@ export default function App() {
             </form>
             {/* 36. Function and attachment buttons */}
             <div className="flex justify-end absolute right-0 top-0 bottom-0">
-              {selectedModel === "gpt-3.5" ? (
+              {selectedModel === "gpt-3.5-turbo" ? (
                 <label>
                   <div onClick={() => setShowSlideUp(!showSlideUp)}>
                     <button className="w-full flex items-center bg-uivory-100 py-2 px-2 rounded-full cursor-pointer shadow transition-all ease-in-out active:scale-[0.98] text-ellipsis whitespace-nowrap overflow-x-hidden text-sm">
