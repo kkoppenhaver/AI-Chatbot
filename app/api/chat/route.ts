@@ -59,18 +59,18 @@ export async function POST(req: Request, res: Response) {
   }
 
   // 11. Set up agent executor with tools and model
-  const model = new ChatOpenAI({ temperature: 0, streaming: true });
+  const model = new ChatOpenAI({ temperature: 0, streaming: true, modelName: selectedModel });
   const wikipediaQuery = new WikipediaQueryRun({
     topKResults: 1,
     maxDocContentLength: 300,
   });
 
   // 14. Define available functions and tools
-  const availableFunctions: Record<string, DynamicTool | DynamicStructuredTool> = {
+  const availableFunctions: Record<string, DynamicTool | DynamicStructuredTool | WikipediaQueryRun> = {
     wikipediaQuery
   };
 
-  const tools: Array<DynamicTool | DynamicStructuredTool> = [wikipediaQuery];
+  const tools: Array<DynamicTool | DynamicStructuredTool | WikipediaQueryRun> = [wikipediaQuery];
   if (functions) {
     functions.forEach((func: FunctionInfo) => {
       if (func.active) {
@@ -78,6 +78,8 @@ export async function POST(req: Request, res: Response) {
       }
     });
   }
+
+  console.log(model);
 
   // 15. Initialize agent executor with tools and model
   const executor = await initializeAgentExecutorWithOptions(tools, model, {

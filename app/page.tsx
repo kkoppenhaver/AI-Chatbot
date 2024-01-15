@@ -17,31 +17,33 @@ import {
 function ModelSelector({ onSelectModel }) {
   // 3. Initialize state for the currentModel
   const [currentModel, setCurrentModel] = useState({
-    model: "gpt-3.5-turbo",
+    model: "gpt-3.5-turbo-1106",
     src: "openai-logo.png",
     alt: "OpenAI Logo",
+    name: "GPT-3.5 Turbo"
   });
 
   // 4. Define modelSelection array
   const modelSelection = [
     {
-      model: "gpt-3.5-turbo",
+      model: "gpt-3.5-turbo-1106",
       src: "openai-logo.png",
       alt: "OpenAI Logo",
+      name: "GPT-3.5 Turbo"
     },
     {
-      model: "gpt-4",
+      model: "gpt-4-1106-preview",
       src: "openai-logo.png",
       alt: "OpenAI Logo",
+      name: "GPT-4 Turbo"
     },
   ];
 
   // 5. Define handleClick function
   const handleClick = () => {
-    const currentIndex = modelSelection.findIndex(
-      (image) => image.src === currentModel.src
-    );
-    const nextIndex = (currentIndex + 1) % modelSelection.length;
+    const modelIndex = modelSelection.findIndex(item => item.model === currentModel.model);
+
+    const nextIndex = (modelIndex + 1) % modelSelection.length;
     setCurrentModel(modelSelection[nextIndex]);
     onSelectModel(modelSelection[nextIndex].model);
   };
@@ -55,12 +57,13 @@ function ModelSelector({ onSelectModel }) {
           className="bg-white rounded-full p-1.5 shadow-element transition-transform ease-in-out active:scale-90 focus:ring outline-none"
           onClick={handleClick}
         >
-          <div>
+          <div className="flex items-center">
             <img
               className="max-w-[35px] max-h-[35px]"
               src={currentModel.src}
               alt={currentModel.alt}
             />
+            <p className="ml-2">{currentModel.name}</p>
           </div>
         </button>
       </div>
@@ -73,7 +76,7 @@ function WelcomeBack() {
   return (
     <>
       <h1 className="text-center tracking-tighter mt-8 mb-8 sm:mb-12 text-5xl">
-        Welcome back <span className="animate-pulse">🦜</span>
+        Welcome back <span>🦜</span>
       </h1>
     </>
   );
@@ -124,7 +127,7 @@ export default function App() {
   const [isInputFocused, setInputFocused] = useState(false);
   const [files, setFiles] = useState([]);
   const [showSlideUp, setShowSlideUp] = useState(false);
-  const [selectedModel, setSelectedModel] = useState("gpt-3.5-turbo");
+  const [selectedModel, setSelectedModel] = useState("gpt-3.5-turbo-1106");
   const [selectedVectorStorage, setSelectedVectorStorage] =
     useState("Supabase");
   const [functions, setFunctions] = useState([
@@ -135,12 +138,12 @@ export default function App() {
   const { messages, input, handleInputChange, handleSubmit } = useChat();
 
   // 16. Handle vector storage selection
-  const handleSelectedVectorStorage = (model) => {
+  const handleSelectedVectorStorage = (model: string) => {
     setSelectedVectorStorage(model);
   };
 
   // 17. Handle model selection
-  const handleModelSelection = (model) => {
+  const handleModelSelection = (model: string) => {
     setSelectedModel(model);
   };
 
@@ -352,7 +355,7 @@ export default function App() {
             </form>
             {/* 36. Function and attachment buttons */}
             <div className="flex justify-end absolute right-0 top-0 bottom-0">
-              {selectedModel === "gpt-3.5-turbo" ? (
+              {selectedModel === "gpt-3.5-turbo-1106" || selectedModel === "gpt-4-1106-preview" ? (
                 <label>
                   <div onClick={() => setShowSlideUp(!showSlideUp)}>
                     <button className="w-full flex items-center bg-uivory-100 py-2 px-2 rounded-full cursor-pointer shadow transition-all ease-in-out active:scale-[0.98] text-ellipsis whitespace-nowrap overflow-x-hidden text-sm">
