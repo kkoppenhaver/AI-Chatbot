@@ -70,7 +70,7 @@ export async function POST(req: Request, res: Response) {
     wikipediaQuery
   };
 
-  const tools: Array<DynamicTool | DynamicStructuredTool> = [foo];
+  const tools: Array<DynamicTool | DynamicStructuredTool> = [wikipediaQuery];
   if (functions) {
     functions.forEach((func: FunctionInfo) => {
       if (func.active) {
