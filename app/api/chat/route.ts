@@ -1,6 +1,5 @@
 // 1. Import dependencies
 import { initializeAgentExecutorWithOptions } from "langchain/agents";
-import { DynamicTool, DynamicStructuredTool, WikipediaQueryRun } from "langchain/tools";
 import { ChatOpenAI } from "langchain/chat_models/openai";
 import { OpenAIEmbeddings } from 'langchain/embeddings/openai';
 import { SupabaseVectorStore } from "langchain/vectorstores/supabase";
@@ -61,26 +60,9 @@ export async function POST(req: Request, res: Response) {
 
   // 11. Set up agent executor with tools and model
   const model = new ChatOpenAI({ temperature: 0, streaming: true });
-  const wikipediaQuery = new WikipediaQueryRun({
-    topKResults: 1,
-    maxDocContentLength: 300,
-  });
-
-  // 14. Define available functions and tools
-  const availableFunctions: Record<string, DynamicTool | DynamicStructuredTool> = {
-    wikipediaQuery
-  };
-  const tools: Array<DynamicTool | DynamicStructuredTool> = [wikipediaQuery];
-  if (functions) {
-    functions.forEach((func: FunctionInfo) => {
-      if (func.active) {
-        tools.push(availableFunctions[func.name]);
-      }
-    });
-  }
 
   // 15. Initialize agent executor with tools and model
-  const executor = await initializeAgentExecutorWithOptions(tools, model, {
+  const executor = await initializeAgentExecutorWithOptions([], model, {
     agentType: "openai-functions",
   });
 
