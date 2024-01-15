@@ -1,5 +1,6 @@
 // 1. Import dependencies
 import { initializeAgentExecutorWithOptions } from "langchain/agents";
+import { DynamicTool, DynamicStructuredTool, WikipediaQueryRun } from "langchain/tools";
 import { ChatOpenAI } from "langchain/chat_models/openai";
 import { OpenAIEmbeddings } from 'langchain/embeddings/openai';
 import { SupabaseVectorStore } from "langchain/vectorstores/supabase";
@@ -28,7 +29,7 @@ export async function POST(req: Request, res: Response) {
   // 5. Extract data from the request
   const { messages, functions, files, selectedModel, selectedVectorStorage } = await req.json();
 
-    // 8. Process the input data
+  // 8. Process the input data
   const latestMessage: string = messages[messages.length - 1].content;
   const decodedFiles: File[] = files.map((file: { base64: string }) => {
     return {
@@ -36,7 +37,6 @@ export async function POST(req: Request, res: Response) {
       content: Buffer.from(file.base64, 'base64').toString('utf-8')
     };
   });
-
   let argForExecutor: string = latestMessage;
   if (files.length > 0) {
     // 9. Set up Supabase vector store for file content
@@ -60,9 +60,27 @@ export async function POST(req: Request, res: Response) {
 
   // 11. Set up agent executor with tools and model
   const model = new ChatOpenAI({ temperature: 0, streaming: true });
+  const wikipediaQuery = new WikipediaQueryRun({
+    topKResults: 1,
+    maxDocContentLength: 300,
+  });
+
+  // 14. Define available functions and tools
+  const availableFunctions: Record<string, DynamicTool | DynamicStructuredTool> = {
+    wikipediaQuery
+  };
+
+  const tools: Array<DynamicTool | DynamicStructuredTool> = [foo];
+  if (functions) {
+    functions.forEach((func: FunctionInfo) => {
+      if (func.active) {
+        tools.push(availableFunctions[func.name]);
+      }
+    });
+  }
 
   // 15. Initialize agent executor with tools and model
-  const executor = await initializeAgentExecutorWithOptions([], model, {
+  const executor = await initializeAgentExecutorWithOptions(tools, model, {
     agentType: "openai-functions",
   });
 
